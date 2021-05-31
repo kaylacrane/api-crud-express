@@ -50,13 +50,16 @@ router.get("/:id", contacts_controller.get_one_contact);
 // crear contacto
 router.post("/", valid_contact, contacts_controller.create_one_contact);
 
-// modificar un contacto ya guardado en la bbdd
+// modificar un contacto ya guardado en la base de datos
 router.put("/:id", valid_contact, contacts_controller.update_one_contact);
 
 // borrar TODOS los contactos
-router.delete("/delete", contacts_controller.delete_all_contacts);
+router.delete("/clear", contacts_controller.delete_all_contacts);
 
-// borrar contacto
+// borrar contacto por id en parámetros
 router.delete("/:id", contacts_controller.delete_one_contact);
+
+// borrar contacto por id en body
+router.delete("/", contacts_controller.delete_one_contact_body);
 
 module.exports = router;

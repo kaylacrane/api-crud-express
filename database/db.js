@@ -1,7 +1,7 @@
 // crear cliente mongodb
 var MongoClient = require("mongodb").MongoClient;
 
-// conexión a la bbdd
+// conexión a la base de datos
 var db = null;
 module.exports.connect = function (url, callback) {
   // por si ya está conectado
@@ -9,7 +9,7 @@ module.exports.connect = function (url, callback) {
     return callback();
   }
 
-  // creear la instancia de mongodb:
+  // crear la instancia de mongodb:
   const client = new MongoClient(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -27,13 +27,13 @@ module.exports.connect = function (url, callback) {
 };
 
 // función para terminar conexión
-module.exports.close = function (callback) {
+module.exports.close = function () {
   if (db) {
     db.close(function (error, result) {
       console.log("Database disconnected");
       console.log(result);
       db = null;
-      callback(error);
+      callback(error); // what?
     });
   }
 };
