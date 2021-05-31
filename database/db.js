@@ -33,7 +33,7 @@ module.exports.close = function () {
       console.log("Database disconnected");
       console.log(result);
       db = null;
-      callback(error); // what?
+      callback(error);
     });
   }
 };

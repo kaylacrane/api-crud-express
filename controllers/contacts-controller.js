@@ -109,7 +109,9 @@ module.exports.update_one_contact = function (request, response, next) {
     return response.status(422).json({ errors: errors.array() });
   }
   const { params, body } = request;
+  //crear filtro para encontrar contacto por id que viene de parámetros (URL)
   const filter = { _id: new mongodb.ObjectID(params.id) };
+  //recoger datos del body en objeto de contacto
   const updatedContact = {
     $set: {
       firstName: body.firstName,
@@ -151,7 +153,7 @@ module.exports.delete_one_contact = function (request, response, next) {
     return;
   }
   const { id } = request.params;
-  //filtro para encontrar contacto a borrar
+  //filtro para encontrar contacto a borrar (ID enviado por parámetros (URL))
   const filter = { _id: new mongodb.ObjectID(id) };
   db.get()
     .db("contact_list")
@@ -178,7 +180,7 @@ module.exports.delete_one_contact_body = function (request, response, next) {
     return;
   }
   const { id } = request.body;
-  //filtro para encontrar contacto a borrar
+  //filtro para encontrar contacto a borrar (ID enviado por cuerpo de request)
   const filter = { _id: new mongodb.ObjectID(id) };
   db.get()
     .db("contact_list")
@@ -208,7 +210,7 @@ module.exports.delete_all_contacts = function (request, response, next) {
     .db("contact_list")
     .collection("contacts")
     .deleteMany({}, function (error, result) {
-      //un {} vacío para borrar todos los contactos
+      //aquí el filtro es un {} vacío para borrar TODOS los contactos
       if (error) {
         next(new Error("Delete all contacts failed"));
         return;

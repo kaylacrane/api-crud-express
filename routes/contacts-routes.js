@@ -4,6 +4,8 @@ var contacts_controller = require("../controllers/contacts-controller");
 const { check } = require("express-validator");
 
 // validar datos enviados
+const regexDNI = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i; //regex para comprobar formato de DNI
+const genderOptions = ["male", "female", "other", "no answer"];
 const valid_contact = [
   check(
     "firstName",
@@ -24,7 +26,7 @@ const valid_contact = [
   check("dni", "DNI must be a combination of exactly 9 numbers and letters")
     .isLength({ min: 9, max: 9 })
     .isAlphanumeric()
-    .matches(/^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i),
+    .matches(regexDNI),
   check(
     "birthday",
     "Birthday must be in correct format: YYYY-MM-DD"
@@ -37,20 +39,20 @@ const valid_contact = [
     .isAlpha((locale = "en-GB"), { ignore: "- /" }),
   check(
     "gender",
-    "Gender must be one of the following: male, female, other, no answer"
-  ).isIn(["male", "female", "other", "no answer"]),
+    `Gender must be one of the following: ${genderOptions.join(", ")}`
+  ).isIn(genderOptions),
 ];
 
 // para devolver lista de contactos
 router.get("/", contacts_controller.get_all_contacts);
 
-// para devolver un contacto proporcionando su id
+// para devolver un contacto proporcionando su id (parámetros)
 router.get("/:id", contacts_controller.get_one_contact);
 
 // crear contacto
 router.post("/", valid_contact, contacts_controller.create_one_contact);
 
-// modificar un contacto ya guardado en la base de datos
+// modificar por id un contacto ya guardado en la base de datos
 router.put("/:id", valid_contact, contacts_controller.update_one_contact);
 
 // borrar TODOS los contactos
